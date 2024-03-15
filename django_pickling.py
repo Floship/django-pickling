@@ -46,7 +46,10 @@ def Model__reduce__(self):
     # We use concat instead of tuple to spead up loads at an expense of dumps
     # This is the fastest way to concat here, formats are slower
     model = opts.app_label + '.' + opts.object_name
-    data = self.__dict__.copy()
+    try:
+        data = self.__getstate__().copy()
+    except AttributeError:
+        return original_Model__reduce__(self)
     state = data.pop('_state')
     try:
         # Popping all known attributes into vector, leaving the rest in data
