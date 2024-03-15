@@ -35,6 +35,8 @@ def model_unpickle(model, vector, db, adding, _cache={}):
     obj._state = ModelState.__new__(ModelState)
     obj._state.__dict__ = {'db': db, 'adding': adding}
 
+    if hasattr(obj, '_contribute_to_instance'):
+        obj._contribute_to_instance()
     return obj
 model_unpickle.__safe_for_unpickle__ = True
 
